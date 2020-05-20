@@ -5,7 +5,7 @@ var MongoClient = require('mongodb').MongoClient
 
 // optional to export common cpu and memory related logs 
 const collectDefaultMetrics = prometheus.collectDefaultMetrics
-//collectDefaultMetrics({timeout: 5000});
+collectDefaultMetrics({timeout: 5000});
 
 // connection string
 var url = 'mongodb://mongodb-service:27017';
@@ -23,7 +23,7 @@ const requestcounter = new prometheus.Counter({
 
 
 const histogram = new prometheus.Histogram({
-  name: 'http_request_duration_ms', // to can be achived by start_time = new Date() and similarly calculating end_time and difference of both under histogram.observe()
+  name: 'random_histogram', // to can be achived by start_time = new Date() and similarly calculating end_time and difference of both under histogram.observe()
   help: 'Duration of HTTP requests in ms',
   labelNames: ['route'],
   buckets: [1,2,5,6,10] // values will be put under any of matching bucket (simply decide this numbers based on values supplied)
@@ -49,8 +49,8 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/histogram', function(req, res, next) {
-var random_number = Math.floor(Math.random() * Math.floor(10));
-histogram.observe(random_number); // to calculate random value b/w 0 to 10
+var random_number = Math.floor(Math.random() * Math.floor(15));
+histogram.observe(random_number); // to calculate random value b/w 0 to 15
 res.send("done with value: "+ random_number)
 });
 router.get('/get', function(req, res, next) {
